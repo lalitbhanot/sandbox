@@ -12,7 +12,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
-import com.lalit.worldgdp.dao.CityRowMapper;
+import com.lalit.worldgdp.dao.mapper.CityRowMapper;
 import com.lalit.worldgdp.model.City;
 
 import lombok.Setter;

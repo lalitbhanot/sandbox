@@ -1,4 +1,4 @@
-package com.lalit.worldgdp.dao;
+package com.lalit.worldgdp.dao.mapper;
 
 import com.lalit.worldgdp.model.City;
 import com.lalit.worldgdp.model.Country;

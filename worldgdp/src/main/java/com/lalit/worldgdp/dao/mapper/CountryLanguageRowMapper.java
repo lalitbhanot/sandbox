@@ -1,4 +1,4 @@
-package com.lalit.worldgdp.dao;
+package com.lalit.worldgdp.dao.mapper;
 
 import com.lalit.worldgdp.model.CountryLanguage;
 import org.springframework.jdbc.core.RowMapper;

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.lalit.worldgdp.dao.mapper.CountryRowMapper;
 import com.lalit.worldgdp.model.Country;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -59,7 +60,7 @@ public class CountryDAO {
         Integer offset = (pageNo - 1) * PAGE_SIZE;
         params.put("offset", offset);
         params.put("size", PAGE_SIZE);
-        System.out.println("Params: {}"+ params.toString());
+        //System.out.println("Params: {}"+ params.toString());
         System.out.println(SELECT_CLAUSE
                 + " WHERE 1 = 1 "
                 + (!StringUtils.isEmpty((String)params.get("search")) ? SEARCH_WHERE_CLAUSE : "")
