@@ -1,4 +1,4 @@
-package com.lalit.urlshortener;
+package com.lalit.urlshortener ;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
