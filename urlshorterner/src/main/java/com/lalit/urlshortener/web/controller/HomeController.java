@@ -5,6 +5,7 @@ import com.lalit.urlshortener.domain.models.CreateShortUrlCmd;
 import com.lalit.urlshortener.domain.models.ShortUrlDto;
 import com.lalit.urlshortener.domain.services.ShortUrlService;
 import com.lalit.urlshortener.web.dtos.CreateShortUrlForm;
+import com.lalit.urlshortener.web.exception.ShortUrlNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,8 +13,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -59,5 +62,16 @@ public class HomeController {
 
         }
         return "redirect:/";
+    }
+
+
+    @GetMapping("/s/{shortKey}")
+    String redirectToOriginalUrl(@PathVariable String shortKey) {
+        Optional<ShortUrlDto> shortUrlDtoOptional = shortUrlService.accessShortUrl(shortKey);
+        if(shortUrlDtoOptional.isEmpty()) {
+            throw new ShortUrlNotFoundException("Invalid short key: "+shortKey);
+        }
+        ShortUrlDto shortUrlDto = shortUrlDtoOptional.get();
+        return "redirect:"+shortUrlDto.originalUrl();
     }
 }

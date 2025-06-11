@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -71,5 +72,21 @@ public class ShortUrlService {
         }
         return sb.toString();
     }
+
+    @Transactional
+    public Optional<ShortUrlDto> accessShortUrl(String shortKey) {
+        Optional<ShortUrl> shortUrlOptional = shortUrlRepository.findByShortKey(shortKey);
+        if(shortUrlOptional.isEmpty()) {
+            return Optional.empty();
+        }
+        ShortUrl shortUrl = shortUrlOptional.get();
+        if(shortUrl.getExpiresAt() != null && shortUrl.getExpiresAt().isBefore(Instant.now())) {
+            return Optional.empty();
+        }
+        shortUrl.setClickCount(shortUrl.getClickCount()+1);
+        shortUrlRepository.save(shortUrl);
+        return shortUrlOptional.map(entityMapper::toShortUrlDto);
+    }
+
     }
 

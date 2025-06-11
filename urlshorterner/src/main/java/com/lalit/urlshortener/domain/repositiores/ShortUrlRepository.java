@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ShortUrlRepository extends JpaRepository<ShortUrl, Long> {
    // @Query("select su from ShortUrl su where su.isPrivate = false order by su.createdAt desc")
@@ -13,6 +14,8 @@ public interface ShortUrlRepository extends JpaRepository<ShortUrl, Long> {
     List<ShortUrl> findPublicShortUrls();
 
     boolean existsByShortKey(String shortKey);
+
+    Optional<ShortUrl> findByShortKey(String shortKey);
 
     /*Option 2: Using @EntityGraph (cleaner approach)
     @EntityGraph(attributePaths = {"createdBy"})
