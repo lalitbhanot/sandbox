@@ -24,11 +24,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class HomeController {
     private final ShortUrlService shortUrlService;
     private final AppProperties properties ;
+    private final SecurityUtils securityUtils;
 
-    public HomeController(ShortUrlService shortUrlService, AppProperties properties) {
+    public HomeController(ShortUrlService shortUrlService, AppProperties properties, SecurityUtils securityUtils) {
         this.shortUrlService = shortUrlService;
         this.properties = properties;
-
+        this.securityUtils = securityUtils;
     }
 
 
@@ -37,7 +38,7 @@ public class HomeController {
         List<ShortUrlDto> shortUrls = shortUrlService.findAllPublicShortUrls();
         model.addAttribute("shortUrls", shortUrls);
         model.addAttribute("baseUrl", properties.baseUrl());
-        model.addAttribute("createShortUrlForm", new CreateShortUrlForm(""));
+        model.addAttribute("createShortUrlForm", new CreateShortUrlForm("",false,null));
         return "index";
     }
     @PostMapping("/short-urls")
@@ -53,7 +54,12 @@ public class HomeController {
         }
 
         try {
-            CreateShortUrlCmd cmd = new CreateShortUrlCmd(form.originalUrl());
+            Long userId = securityUtils.getCurrentUserId();
+            CreateShortUrlCmd cmd = new CreateShortUrlCmd(
+                    form.originalUrl(),
+                    form.isPrivate(),
+                    form.expirationInDays(),
+                    userId);
             var shortUrlDto = shortUrlService.createShortUrl(cmd);
             redirectAttributes.addFlashAttribute("successMessage", "Short URL created successfully "+
                     properties.baseUrl()+"/s/"+shortUrlDto.shortKey());
@@ -67,7 +73,7 @@ public class HomeController {
 
     @GetMapping("/s/{shortKey}")
     String redirectToOriginalUrl(@PathVariable String shortKey) {
-        Optional<ShortUrlDto> shortUrlDtoOptional = shortUrlService.accessShortUrl(shortKey);
+        Optional<ShortUrlDto> shortUrlDtoOptional = shortUrlService.accessShortUrl(shortKey,securityUtils.getCurrentUserId());
         if(shortUrlDtoOptional.isEmpty()) {
             throw new ShortUrlNotFoundException("Invalid short key: "+shortKey);
         }
