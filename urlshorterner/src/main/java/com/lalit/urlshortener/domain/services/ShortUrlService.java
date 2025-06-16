@@ -2,9 +2,14 @@ package com.lalit.urlshortener.domain.services;
 
 import com.lalit.urlshortener.AppProperties;
 import com.lalit.urlshortener.domain.models.CreateShortUrlCmd;
+import com.lalit.urlshortener.domain.models.PagedResult;
 import com.lalit.urlshortener.domain.models.ShortUrlDto;
 import com.lalit.urlshortener.domain.repositiores.ShortUrlRepository;
 import com.lalit.urlshortener.domain.repositiores.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.lalit.urlshortener.domain.entities.ShortUrl;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,9 +43,12 @@ public class ShortUrlService {
     }*/
     // mapping the entities to DTO
 
-    public List<ShortUrlDto> findAllPublicShortUrls() {
-        return shortUrlRepository.findPublicShortUrls()
-                .stream().map(entityMapper::toShortUrlDto).toList();
+    public PagedResult<ShortUrlDto> findAllPublicShortUrls(int pageNo, int pageSize) {
+        pageNo = pageNo > 1? pageNo - 1 : 0;
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Page<ShortUrlDto> shortUrlDtoPage = shortUrlRepository.findPublicShortUrls(pageable)
+                .map(entityMapper::toShortUrlDto);
+        return PagedResult.from(shortUrlDtoPage);
     }
 @Transactional
     public ShortUrlDto createShortUrl(CreateShortUrlCmd cmd) {

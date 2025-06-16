@@ -20,6 +20,8 @@ public record AppProperties(
         @Max(365)
         int defaultExpiryInDays,
         @DefaultValue("true")
-        boolean validateOriginalUrl
+        boolean validateOriginalUrl,
+         @DefaultValue("10")
+        int pageSize
 ) {
 }
