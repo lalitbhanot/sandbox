@@ -20,6 +20,8 @@ public interface ShortUrlRepository extends JpaRepository<ShortUrl, Long> {
 
     Optional<ShortUrl> findByShortKey(String shortKey);
 
+    Page<ShortUrl> findByCreatedById(Long userId, Pageable pageable);
+
     /*Option 2: Using @EntityGraph (cleaner approach)
     @EntityGraph(attributePaths = {"createdBy"})
     @Query("select su from ShortUrl su where su.isPrivate = false order by su.createdAt desc")

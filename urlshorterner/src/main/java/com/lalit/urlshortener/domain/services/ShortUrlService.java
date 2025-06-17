@@ -37,6 +37,17 @@ public class ShortUrlService {
         this.properties = properties;
         this.userRepository = userRepository;
     }
+    public PagedResult<ShortUrlDto> getUserShortUrls(Long userId, int page, int pageSize) {
+        Pageable pageable = getPageable(page, pageSize);
+        var shortUrlsPage = shortUrlRepository.findByCreatedById(userId, pageable)
+                .map(entityMapper::toShortUrlDto);
+        return PagedResult.from(shortUrlsPage);
+    }
+    private Pageable getPageable(int page, int size) {
+        page = page > 1 ? page - 1: 0;
+        return PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
+    }
+
 
    /* public List<ShortUrl> findAllPublicShortUrls() {
         return shortUrlRepository.findPublicShortUrls();
