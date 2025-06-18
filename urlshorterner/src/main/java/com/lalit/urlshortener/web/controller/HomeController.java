@@ -32,8 +32,11 @@ public class HomeController {
 
 
     @GetMapping("/")
-    public String home(@RequestParam(defaultValue = "1") Integer page, Model model) {
+    public String home(
+            @RequestParam(defaultValue = "1") Integer page,
+            Model model) {
         this.addShortUrlsDataToModel(model, page);
+        model.addAttribute("paginationUrl", "/");
         model.addAttribute("createShortUrlForm",
                 new CreateShortUrlForm("", false, null));
         return "index";
@@ -83,6 +86,10 @@ public class HomeController {
         ShortUrlDto shortUrlDto = shortUrlDtoOptional.get();
         return "redirect:"+shortUrlDto.originalUrl();
     }
+    @GetMapping("/login")
+    String loginForm() {
+        return "login";
+    }
 
     @GetMapping("/my-urls")
     public String showUserUrls(
@@ -97,8 +104,27 @@ public class HomeController {
         return "my-urls";
     }
 
-    @GetMapping("/login")
-    String loginForm() {
-        return "login";
+
+    @PostMapping("/delete-urls")
+    public String deleteUrls(
+            @RequestParam(value = "ids", required = false) List<Long> ids,
+            RedirectAttributes redirectAttributes) {
+        if (ids == null || ids.isEmpty()) {
+            redirectAttributes.addFlashAttribute(
+                    "errorMessage", "No URLs selected for deletion");
+            return "redirect:/my-urls";
+        }
+        try {
+            var currentUserId = securityUtils.getCurrentUserId();
+            shortUrlService.deleteUserShortUrls(ids, currentUserId);
+            redirectAttributes.addFlashAttribute("successMessage",
+                    "Selected URLs have been deleted successfully");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Error deleting URLs: " + e.getMessage());
+        }
+        return "redirect:/my-urls";
     }
+
+
 }

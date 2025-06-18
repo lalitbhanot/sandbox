@@ -121,5 +121,18 @@ public class ShortUrlService {
         return shortUrlOptional.map(entityMapper::toShortUrlDto);
     }
 
+    @Transactional
+    public void deleteUserShortUrls(List<Long> ids, Long userId) {
+        if (ids != null && !ids.isEmpty() && userId != null) {
+            shortUrlRepository.deleteByIdInAndCreatedById(ids, userId);
+        }
     }
+
+    public PagedResult<ShortUrlDto> findAllShortUrls(int page, int pageSize) {
+        Pageable pageable = getPageable(page, pageSize);
+        var shortUrlsPage =  shortUrlRepository.findAllShortUrls(pageable).map(entityMapper::toShortUrlDto);
+        return PagedResult.from(shortUrlsPage);
+    }
+
+}
 
