@@ -1,23 +1,33 @@
 package com.lalit.bookstoread;
 
 import org.junit.jupiter.api.*;
-
+import java.util.Arrays;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("A bookshelf")
 public class BookShelfTest {
-   private  BookShelf bookShelf ;
+    private BookShelf bookShelf;
+    private BookShelf shelf;
+    private Book effectiveJava;
+    private Book codeComplete;
+    private Book mythicalManMonth;
+
     @BeforeAll
     @DisplayName("Before All Method")
     static void BeforeAllTestShelf() {
         System.out.println("Before All runs first");
     }
 
+    @AfterAll
+    static void AfterAllTestShelf() {
+        System.out.println("Last method to run for clean up ");
+
+    }
+
     @BeforeEach
     void init() {
-        bookShelf= new BookShelf();
+        bookShelf = new BookShelf();
         System.out.println("Runs Before  Each Test Begins ");
     }
 
@@ -60,7 +70,7 @@ public class BookShelfTest {
         List<String> books = bookShelf.books(); // Retreiveing the books
         try {
             books.add("The Mythical Man-Month"); // adding the books to book list basically modifing the booklist
-                                                //the collection that we received from the books method
+            //the collection that we received from the books method
             // is mutable so we were able to successfully add a book to it.
             fail(() -> "Should not be able to add book to books");
         } catch (Exception e) {
@@ -68,16 +78,30 @@ public class BookShelfTest {
         }
     }
 
+    @Test
+    void bookshelfArrangedByBookTitle() {
+        BookShelf shelf = new BookShelf();
+        shelf.add("Effective Java", "Code Complete", "The Mythical Man-Month");
+        List<String> books = shelf.arrange();
+        assertEquals
+                (Arrays.asList("Code Complete", "Effective Java", "The Mythical Man-Month"),
+                        books, () -> "Books in a bookshelf should be arranged lexicographically by book title");
+    }
+
+    @Test
+    void booksInBookShelfAreInInsertionOrderAfterCallingArrange() {
+        BookShelf shelf = new BookShelf();
+        shelf.add("Effective Java", "Code Complete", "The Mythical Man-Month");
+        shelf.arrange(); // c,e, t
+        List<String> books = shelf.books();
+        System.out.println(books.toString()) ;
+        assertEquals(Arrays.asList("Effective Java", "Code Complete", "The Mythical Man-Month"),
+                books, () -> "Books in bookshelf are in insertion order");
+    }
 
     @AfterEach
     void afterEachTestShelf() {
         System.out.println("Runs After  Each  Test Completes ");
-    }
-
-    @AfterAll
-    static void AfterAllTestShelf() {
-        System.out.println("Last method to run for clean up ");
-
     }
 
 }

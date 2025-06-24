@@ -1,9 +1,7 @@
 package com.lalit.bookstoread;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class BookShelf {
     private List<String> books = new ArrayList<>();
@@ -25,4 +23,9 @@ public class BookShelf {
     public String toString() {
         return books.toString();
     }
+
+    public List<String> arrange() {
+        return books.stream().sorted().collect(Collectors.toList());
+    }
+
 }
