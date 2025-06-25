@@ -1,10 +1,11 @@
 package com.lalit.bookstoread;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.time.Year;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 public class BookShelfV2 {
 
@@ -20,6 +21,38 @@ public class BookShelfV2 {
     }
 
     public List<Book> arrange() {
-        return books.stream().sorted().collect(Collectors.toList()); // Sorts using compareTo
+        return books.stream().sorted().collect(Collectors.toList());
+    }
+
+    public List<Book> arrangeUsingComparator(Comparator<Book> comparator) {
+        return books.stream()
+                .sorted(comparator)
+                .collect(Collectors.toList());
+        //This is a cleaner approach no need to make any change in the  Book class , can be used for multiple fields
+        //Sort by Title: List<Book> sortedByTitle = arrangeUsingComparator(Comparator.comparing(Book::getTitle));
+        //Sort by Author: List<Book> sortedByAuthor = arrangeUsingComparator(Comparator.comparing(Book::getAuthor));
+        //Sort by Publication Date: List<Book> sortedByPublicationDate = arrangeUsingComparator(Comparator.comparing(Book::getPublicationDate));
+        //A Custom Comparator : Comparator<Book> titleDescending = Comparator.comparing(Book::getTitle).reversed();
+
+    }
+
+    public List<Book> arrange(Comparator<Book> criteria) {
+        return books.stream().sorted(criteria).collect(Collectors.toList());
+    }
+
+//    public Map<Year, List<Book>> groupByPublicationYear() {
+//        return books
+//                .stream()
+//                .collect(groupingBy(book -> Year.of(book.getPublishedOn().getYear())));
+//    }
+
+    public Map<Year, List<Book>> groupByPublicationYear() {
+        return groupBy(book -> Year.of(book.getPublishedOn().getYear()));
+    }
+
+    public <K> Map<K, List<Book>> groupBy(Function<Book, K> fx) {
+        return books
+                .stream()
+                .collect(groupingBy(fx));
     }
 }
