@@ -16,7 +16,7 @@ import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class BookShelfTestAssertJV3 {
+public class BookShelfAssertJTestV3 {
     private BookShelfV2 shelf;
 
     private Book effectiveJava;
@@ -27,10 +27,10 @@ public class BookShelfTestAssertJV3 {
     @BeforeEach
     void init() throws Exception {
         shelf = new BookShelfV2();
-        effectiveJava = new Book("Joshua Bloch", "Effective Java", LocalDate.of(2008, Month.MAY, 8));
-        codeComplete = new Book("Steve McConnel", "Code Complete", LocalDate.of(2004, Month.JUNE, 9));
-        mythicalManMonth = new Book("Frederick Phillips Brooks", "The Mythical Man-Month", LocalDate.of(1975, Month.JANUARY, 1));
-        cleanCode = new Book("Robert C. Martin", "cleanCode", LocalDate.of(2008, Month.JANUARY, 1));
+        effectiveJava = new Book("Effective Java","Joshua Bloch" , LocalDate.of(2008, Month.MAY, 8));
+        codeComplete = new Book("Code Complete","Steve McConnel" , LocalDate.of(2004, Month.JUNE, 9));
+        mythicalManMonth = new Book("The Mythical Man-Month","Frederick Phillips Brooks",  LocalDate.of(1975, Month.JANUARY, 1));
+        cleanCode = new Book("cleanCode","Robert C. Martin" , LocalDate.of(2008, Month.JANUARY, 1));
 
     }
 

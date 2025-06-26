@@ -8,8 +8,11 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.Month;
 
-
-public class BookShelfTestNestedV4 {
+// Problems here are as follows
+// 1. The test code is tightly coupled with test data.
+// What if we want to run BookShelfSpec with different data based on some condition
+//2. We can’t reuse test data.
+public class BookShelfNestedTestV4 {
     private BookShelfV2 shelf;
 
     private Book effectiveJava;
