@@ -3,9 +3,12 @@ package com.lalit.bookstoread;
 import java.time.Year;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 public class BookShelfV2 {
 
@@ -21,13 +24,13 @@ public class BookShelfV2 {
     }
 
     public List<Book> arrange() {
-        return books.stream().sorted().collect(Collectors.toList());
+        return books.stream().sorted().collect(toList());
     }
 
     public List<Book> arrangeUsingComparator(Comparator<Book> comparator) {
         return books.stream()
                 .sorted(comparator)
-                .collect(Collectors.toList());
+                .collect(toList());
         //This is a cleaner approach no need to make any change in the  Book class , can be used for multiple fields
         //Sort by Title: List<Book> sortedByTitle = arrangeUsingComparator(Comparator.comparing(Book::getTitle));
         //Sort by Author: List<Book> sortedByAuthor = arrangeUsingComparator(Comparator.comparing(Book::getAuthor));
@@ -37,7 +40,7 @@ public class BookShelfV2 {
     }
 
     public List<Book> arrange(Comparator<Book> criteria) {
-        return books.stream().sorted(criteria).collect(Collectors.toList());
+        return books.stream().sorted(criteria).collect(toList());
     }
 
 //    public Map<Year, List<Book>> groupByPublicationYear() {
@@ -63,4 +66,27 @@ public class BookShelfV2 {
         int percentageToRead = booksToRead * 100 / books.size();
         return new Progress(percentageCompleted, percentageToRead, 0);
     }
+
+    public List<Book> findBooksByTitle(String code) {
+        System.out.println(books.toString());
+        List<Book> bookSearched = books.stream().filter(book -> book.getTitle().contains(code)).collect(Collectors.toList());
+        return bookSearched ;
+    }
+
+//    public List<Book> findBooksByTitle(String title, Predicate<Book> filter) {
+//        return books.stream()
+//                .filter(b -> b.getTitle().toLowerCase().contains(title))
+//                .filter(filter)
+//                .collect(toList());
+//    }
+
+    public List<Book> findBooksByTitle(String title, BookFilter filter) {
+        System.out.println(books.toString());
+        return books.stream()
+                .filter(b -> b.getTitle().toLowerCase().contains(title))
+                .filter(b -> filter.apply(b))
+                .collect(toList());
+    }
+
+
 }
