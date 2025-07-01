@@ -15,15 +15,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Nested
 @DisplayName("search")
-public class BookFilterMockitoTest {
-
+public class BookFilterMockitoTest implements FilterBoundaryTest {
+    // chapter 5 : need to study again
     private BookShelfV2 shelf;
 
     private Book effectiveJava;
     private Book codeComplete;
     private Book mythicalManMonth;
     private Book cleanCode;
-
+    BookFilter filter;
     @BeforeEach
     void setup() {
         shelf = new BookShelfV2();
@@ -43,9 +43,11 @@ public class BookFilterMockitoTest {
         BookFilter invokedMockedFilter = Mockito.mock(BookFilter.class);
         Mockito.when(invokedMockedFilter.apply(cleanCode)).thenReturn(false);
         compositeFilter.addFilter(invokedMockedFilter);
+
         BookFilter nonInvokedMockedFilter = Mockito.mock(BookFilter.class);
         Mockito.when(nonInvokedMockedFilter.apply(cleanCode)).thenReturn(true);
         compositeFilter.addFilter(nonInvokedMockedFilter);
+
         assertFalse(compositeFilter.apply(cleanCode));
         Mockito.verify(invokedMockedFilter).apply(cleanCode);
         Mockito.verifyNoInteractions(nonInvokedMockedFilter);
@@ -58,11 +60,19 @@ public class BookFilterMockitoTest {
         BookFilter firstInvokedMockedFilter = Mockito.mock(BookFilter.class);
         Mockito.when(firstInvokedMockedFilter.apply(cleanCode)).thenReturn(true);
         compositeFilter.addFilter(firstInvokedMockedFilter);
+
         BookFilter secondInvokedMockedFilter = Mockito.mock(BookFilter.class);
         Mockito.when(secondInvokedMockedFilter.apply(cleanCode)).thenReturn(true);
         compositeFilter.addFilter(secondInvokedMockedFilter);
+
         assertTrue(compositeFilter.apply(cleanCode));
+
         Mockito.verify(firstInvokedMockedFilter).apply(cleanCode);
         Mockito.verify(secondInvokedMockedFilter).apply(cleanCode);
+
+    }
+
+    public BookFilter get() {
+        return filter;
     }
 }

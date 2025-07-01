@@ -14,6 +14,15 @@ public class BookShelfV2 {
 
 
     private final List<Book> books = new ArrayList<>();
+    private final int capacity;
+
+    public BookShelfV2() {
+        this.capacity = Integer.MAX_VALUE;
+    }
+
+    public BookShelfV2(int capacity) {
+        this.capacity = capacity;
+    }
 
     public List<Book> books() {
         return Collections.unmodifiableList(books);
@@ -21,6 +30,21 @@ public class BookShelfV2 {
 
     public void add(Book... booksToAdd) {
         Arrays.stream(booksToAdd).forEach(books::add);
+    }
+
+
+
+    public void addNew(Book... booksToAdd) throws BookShelfCapacityReached {
+
+        // ① Single pre‑check handles *any* number of incoming books
+        if (books.size() + booksToAdd.length > capacity) {
+            throw new BookShelfCapacityReached(
+                    String.format("BookShelf capacity of %d is reached. You can't add more books.", capacity)
+            );
+        }
+
+        // ② Safe to add — no stream/lambda needed
+        books.addAll(Arrays.asList(booksToAdd));
     }
 
     public List<Book> arrange() {
@@ -69,7 +93,7 @@ public class BookShelfV2 {
 
     public List<Book> findBooksByTitle(String code) {
         System.out.println(books.toString());
-        List<Book> bookSearched = books.stream().filter(book -> book.getTitle().contains(code)).collect(Collectors.toList());
+        List<Book> bookSearched = books.stream().filter(book -> book.getTitle().contains(code)).collect(toList());
         return bookSearched ;
     }
 
