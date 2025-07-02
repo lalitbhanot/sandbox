@@ -110,9 +110,9 @@ public class BookShelfBookExceptionHandlingTestV6 {
     }
     @Test
     void throwsExceptionWhenBooksAreAddedAfterCapacityIsReached() throws BookShelfCapacityReached {
-        BookShelfV2 bookShelfV2 = new BookShelfV2(2);
-        bookShelfV2.addNew(effectiveJava, codeComplete);
-        BookShelfCapacityReached throwException = assertThrows(BookShelfCapacityReached.class, () -> bookShelfV2.add(mythicalManMonth));
+        BookShelfV2 bookShelf = new BookShelfV2(2);
+        bookShelf.addNew(effectiveJava, codeComplete);
+        BookShelfCapacityReached throwException = assertThrows(BookShelfCapacityReached.class, () -> bookShelf.add(mythicalManMonth));
         assertEquals("BookShelf capacity of 2 is reached. You can't add more books.", throwException.getMessage());
     }
 }

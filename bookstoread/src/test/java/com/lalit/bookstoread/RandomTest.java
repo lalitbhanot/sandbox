@@ -1,14 +1,18 @@
 package com.lalit.bookstoread;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.cglib.core.internal.Function;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BiFunction;
 
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName(" Class to test random features")
@@ -30,5 +34,14 @@ public class RandomTest {
         return number % 2 == 0;
     }
 
+    @Test
+    void test_should_complete_in_one_second() {
+        assertTimeout(Duration.of(1, ChronoUnit.SECONDS), () -> Thread.sleep(5));
+    }
 
+
+    @RepeatedTest(10)
+    void i_am_a_repeated_test() {
+        assertTrue(true);
+    }
 }

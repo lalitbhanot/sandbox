@@ -22,5 +22,7 @@ public class Progress {
     public int inProgress() {
         return this.inProgress;
     }
-
+    public static Progress notStarted() {
+        return new Progress(0, 0, 0);
+    }
 }

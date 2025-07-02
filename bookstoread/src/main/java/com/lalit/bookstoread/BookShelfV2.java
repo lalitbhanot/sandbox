@@ -84,6 +84,9 @@ public class BookShelfV2 {
     }
 
     public Progress progress() {
+        if (books.isEmpty()) {
+            return Progress.notStarted();
+        }
         int booksRead = Long.valueOf(books.stream().filter(Book::isRead).count()).intValue();
         int booksToRead = books.size() - booksRead;
         int percentageCompleted = booksRead * 100 / books.size();
