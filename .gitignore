@@ -1,0 +1,30 @@
+# Compiled class files
+*.class
+
+# Java compiled output
+/target/
+/build/
+/out/
+/bin/
+
+# IDE specific files
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Other common exclusions
+*.log
+*.tmp
+.DS_Store
