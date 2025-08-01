@@ -10,11 +10,9 @@ spring:
     user:
       name: "user"
       password: "password"
-      roles:
-        - "ADMIN"
     oauth2:
       authorizationserver:
-        client:
+        client:            
           football:
             registration:
               client-id: "football"
@@ -36,7 +34,7 @@ spring:
                 - "authorization_code"
                 - "refresh_token"
                 - "client_credentials"
-              redirect-uris:
+              redirect-uris: 
                 - "http://localhost:9080/login/oauth2/code/football-ui"
               scopes:
                 - "openid"

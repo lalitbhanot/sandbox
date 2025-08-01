@@ -1,11 +1,11 @@
 server:
   port: 9080
-spring:
+spring:   
   security:
     oauth2:
       client:
-        registration:
-          football-ui:
+        registration: 
+          football-ui: 
             client-id: "football-ui"
             client-secret: "TheSecretSauce"
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
