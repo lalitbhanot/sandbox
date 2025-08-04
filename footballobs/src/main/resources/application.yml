@@ -3,13 +3,24 @@ management:
     health:
       probes:
         enabled: true
+    prometheus:
+      enabled: true
   endpoints:
     web:
       exposure:
-        include: health,env,metrics,beans,loggers,football
+        include: health,env,metrics,beans,loggers,football,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  tracing:
+    sampling:
+      probability: 1
 football:
   folder: teams
 spring:
+  application:
+    name: trading-service
   datasource:
     url: jdbc:postgresql://localhost:5432/football
     username: packt
