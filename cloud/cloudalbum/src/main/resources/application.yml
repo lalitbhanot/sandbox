@@ -1,0 +1,9 @@
+spring:
+  applicatcleaion:
+    name: AlbumsServer
+server:
+  port: 8085
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
