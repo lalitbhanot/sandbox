@@ -22,4 +22,10 @@ import java.util.List;
         public List<Player> getPlayers() {
             return footballClient.getPlayers();
         }
+
+    @GetMapping
+    public List<String> getAlbums(){
+        return List.of("Album 1", "Album 2", "Album 3");
+
     }
+}

@@ -1,9 +1,12 @@
-spring:
-  applicatcleaion:
-    name: AlbumsServer
 server:
   port: 8085
+spring:
+  application:
+    name: ALBUMSSERVER
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+  instance:
+    instanceId: ${spring.application.name}:${server.port}
+    prefer-ip-address: true

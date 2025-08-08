@@ -5,19 +5,21 @@ spring:
     gateway:
       routes:
         - id: players
-          uri: lb://FootballServer
+#          uri: lb://FOOTBALLSERVER   this is working
+          uri: ${PLAYERS_URI:lb://footballserver}
           predicates:
             - Path=/api/players/**
           filters:
             - StripPrefix=1
         - id: albums
-          uri: lb://AlbumsServer
+          uri: ${ALBUMS_URI:lb://albumsserver}
+#          uri: lb://ALBUMSSERVER
           predicates:
             - Path=/api/albums/**
           filters:
             - StripPrefix=1
 server:
-  port: 8083
+  port: 8080
 eureka:
   client:
     serviceUrl:
