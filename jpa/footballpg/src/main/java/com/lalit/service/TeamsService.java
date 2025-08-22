@@ -2,7 +2,7 @@ package com.lalit.service;
 
 import java.util.List;
 
-import com.lalit.entities.Team;
+import com.lalit.dto.Teamv1;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -19,14 +19,14 @@ public class TeamsService {
         return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM teams", Integer.class);
     }
 
-    public Team getTeam(int id) {
+    public Teamv1 getTeam(int id) {
         return jdbcTemplate.queryForObject("SELECT * FROM teams WHERE id = ?",
-                new BeanPropertyRowMapper<>(Team.class), id);
+                new BeanPropertyRowMapper<>(Teamv1.class), id);
     }
 
-    public List<Team> getTeams() {
+    public List<Teamv1> getTeams() {
         return jdbcTemplate.query("SELECT * FROM teams", (rs, rowNum) -> {
-            Team team = new Team();
+            Teamv1 team = new Teamv1();
             team.setId(rs.getInt("id"));
             team.setName(rs.getString("name"));
             return team;
