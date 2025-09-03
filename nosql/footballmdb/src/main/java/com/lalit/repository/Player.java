@@ -1,28 +1,29 @@
-package com.lalit.dto;
+package com.lalit.repository;
 
 import java.time.LocalDate;
 
-public class Playerv1 {
-    private int id;
-    private int jerseyNumber;
+public class Player {
+    private String id;
+    private Integer jerseyNumber;
     private String name;
     private String position;
     private LocalDate dateOfBirth;
-    private int teamId;
+    private Integer height;
+    private Integer weight;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getJerseyNumber() {
+    public Integer getJerseyNumber() {
         return jerseyNumber;
     }
 
-    public void setJerseyNumber(int jerseyNumber) {
+    public void setJerseyNumber(Integer jerseyNumber) {
         this.jerseyNumber = jerseyNumber;
     }
 
@@ -50,11 +51,20 @@ public class Playerv1 {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public int getTeamId() {
-        return teamId;
+    public Integer getHeight() {
+        return height;
     }
 
-    public void setTeamId(int teamId) {
-        this.teamId = teamId;
+    public void setHeight(Integer height) {
+        this.height = height;
     }
+
+    public Integer getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Integer weight) {
+        this.weight = weight;
+    }
+
 }
