@@ -2,8 +2,9 @@ package com.lalit.controller;
 
 import java.util.List;
 
-import com.lalit.repository.Player;
-import com.lalit.repository.Team;
+import com.lalit.entities.MatchEvent;
+import com.lalit.entities.Player;
+import com.lalit.entities.Team;
 import com.lalit.service.FootballService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,11 +37,6 @@ public class FootballController {
         return footballService.getTeamByName(name);
     }
 
-    @GetMapping("/team/{name}/sql")
-    public List<Team> getTeamByNameSQL(@PathVariable String name) {
-        return footballService.getTeamByNameSQL(name);
-    }
-
     @GetMapping("/team/{name}/contains")
     public List<Team> getTeamsContainingName(@PathVariable String name) {
         return footballService.getTeamsContainingName(name);
@@ -64,6 +60,16 @@ public class FootballController {
     @PatchMapping("/team/{id}")
     public void updateTeamName(@PathVariable String id, @RequestParam String name) {
         footballService.updateTeamName(id, name);
-    }   
+    }
+
+    @GetMapping("/match/{id}/events")
+    public List<MatchEvent> getMatchEvents(@PathVariable String id) {
+        return footballService.getMatchEvents(id);
+    }
+
+    @GetMapping("/match/{matchId}/{playerId}/events")
+    public List<MatchEvent> getPlayerEvents(@PathVariable String matchId, @PathVariable String playerId) {
+        return footballService.getPlayerEvents(matchId, playerId);
+    }
 
 }

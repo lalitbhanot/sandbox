@@ -3,6 +3,7 @@ package com.lalit.repository;
 import java.util.List;
 import java.util.Optional;
 
+import com.lalit.entities.Team;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 

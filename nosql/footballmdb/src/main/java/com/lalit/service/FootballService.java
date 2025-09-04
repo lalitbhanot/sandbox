@@ -2,8 +2,12 @@ package com.lalit.service;
 
 import java.util.List;
 
-import com.lalit.repository.Player;
-import com.lalit.repository.Team;
+import com.lalit.entities.MatchEvent;
+import com.lalit.entities.Player;
+import com.lalit.entities.Team;
+import com.lalit.repository.MatchEventRepository;
+import com.lalit.repository.MatchRepository;
+import com.lalit.repository.PlayerRepository;
 import com.lalit.repository.TeamRepository;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -11,7 +15,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
-import com.mongodb.client.result.UpdateResult;
 
 
 @Service
@@ -19,10 +22,16 @@ public class FootballService {
 
     private TeamRepository teamRepository;
     private MongoTemplate mongoTemplate;
+    private PlayerRepository playerRepository;
+    private MatchEventRepository matchEventRepository;
+    private MatchRepository matchRepository;
 
-    public FootballService(TeamRepository teamRepository, MongoTemplate mongoTemplate) {
+    public FootballService(TeamRepository teamRepository, MongoTemplate mongoTemplate, PlayerRepository playerRepository, MatchEventRepository matchEventRepository, MatchRepository matchRepository) {
         this.teamRepository = teamRepository;
         this.mongoTemplate = mongoTemplate;
+        this.playerRepository = playerRepository;
+        this.matchEventRepository = matchEventRepository;
+        this.matchRepository = matchRepository;
     }
 
     public Team getTeam(String id) {
@@ -38,16 +47,7 @@ public class FootballService {
     }
 
     public Player getPlayer(String id) {
-        Team team = teamRepository.findPlayerById(id);
-        if (team != null) {
-            return team.getPlayers().isEmpty() ? null : team.getPlayers().get(0);
-        } else {
-            return null;
-        }
-    }
-
-    public List<Team> getTeamByNameSQL(String name) {
-        return teamRepository.findByNameSQL(name);
+        return playerRepository.findById(id).orElse(null);
     }
 
     public Team saveTeam(Team team) {
@@ -62,6 +62,14 @@ public class FootballService {
         Query query = new Query(Criteria.where("id").is(id));
         Update updateName = new Update().set("name", name);
         mongoTemplate.updateFirst(query, updateName, Team.class);
+    }
+
+    public List<MatchEvent> getMatchEvents(String matchId) {
+        return matchEventRepository.findByMatchId(matchId);
+    }
+
+    public List<MatchEvent> getPlayerEvents(String matchId, String playerId) {
+        return matchEventRepository.findByMatchIdAndPlayerId(matchId, playerId);
     }
 
 }

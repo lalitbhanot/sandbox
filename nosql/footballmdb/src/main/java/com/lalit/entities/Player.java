@@ -1,8 +1,12 @@
-package com.lalit.repository;
+package com.lalit.entities;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
-
+@Document(collection = "players")
 public class Player {
+    @Id
     private String id;
     private Integer jerseyNumber;
     private String name;
